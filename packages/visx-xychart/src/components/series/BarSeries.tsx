@@ -2,11 +2,13 @@ import { AxisScale } from '@visx/axis';
 import React from 'react';
 import BaseBarSeries, { BaseBarSeriesProps } from './private/BaseBarSeries';
 import Bars from './private/Bars';
+import { BarSeriesProps } from '../../types';
 
-function BarSeries<XScale extends AxisScale, YScale extends AxisScale, Datum extends object>({
-  colorAccessor,
-  ...props
-}: Omit<BaseBarSeriesProps<XScale, YScale, Datum>, 'BarsComponent'>) {
+export function BarSeries<
+  XScale extends AxisScale,
+  YScale extends AxisScale,
+  Datum extends object,
+>({ colorAccessor, ...props }: Omit<BarSeriesProps<XScale, YScale, Datum>, 'BarsComponent'>) {
   return (
     <BaseBarSeries<XScale, YScale, Datum>
       {...props}

@@ -26,7 +26,13 @@ export type BaseBarSeriesProps<
   colorAccessor?: (d: Datum, index: number) => string | null | undefined;
 } & Pick<
     BarsProps<XScale, YScale>,
-    'radius' | 'radiusAll' | 'radiusTop' | 'radiusRight' | 'radiusBottom' | 'radiusLeft'
+    | 'radius'
+    | 'radiusAll'
+    | 'radiusTop'
+    | 'radiusRight'
+    | 'radiusBottom'
+    | 'radiusLeft'
+    | 'BarComponent'
   >;
 
 // Fallback bandwidth estimate assumes no missing data values (divides chart space by # datum)
@@ -35,6 +41,7 @@ const getFallbackBandwidth = (fullBarWidth: number, barPadding: number) =>
   fullBarWidth * (1 - Math.min(1, Math.max(0, barPadding)));
 
 function BaseBarSeries<XScale extends AxisScale, YScale extends AxisScale, Datum extends object>({
+  BarComponent,
   BarsComponent,
   barPadding = 0.1,
   colorAccessor,
@@ -72,7 +79,7 @@ function BaseBarSeries<XScale extends AxisScale, YScale extends AxisScale, Datum
 
   const color = colorScale?.(dataKey) ?? theme?.colors?.[0] ?? '#222';
 
-  const bars = useMemo(() => {
+  const bars: Bar[] = useMemo(() => {
     const xOffset = horizontal ? 0 : -barThickness / 2;
     const yOffset = horizontal ? -barThickness / 2 : 0;
     return data
@@ -86,6 +93,7 @@ function BaseBarSeries<XScale extends AxisScale, YScale extends AxisScale, Datum
 
         return {
           key: `${index}`,
+          barIndex: index,
           x: horizontal ? xZeroPosition + Math.min(0, barLength) : x,
           y: horizontal ? y : yZeroPosition + Math.min(0, barLength),
           width: horizontal ? Math.abs(barLength) : barThickness,
@@ -124,6 +132,7 @@ function BaseBarSeries<XScale extends AxisScale, YScale extends AxisScale, Datum
     <g className="vx-bar-series">
       <BarsComponent
         bars={bars}
+        BarComponent={BarComponent}
         horizontal={horizontal}
         xScale={xScale}
         yScale={yScale}

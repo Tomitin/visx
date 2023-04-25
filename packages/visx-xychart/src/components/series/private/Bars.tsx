@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxisScale } from '@visx/axis';
-import { BarRounded } from '@visx/shape';
+import { Bar, BarRounded } from '@visx/shape';
 import React from 'react';
 import { BarsProps } from '../../../types';
 
 export default function Bars({
   bars,
+  BarComponent,
   horizontal,
   xScale,
   yScale,
@@ -21,14 +22,16 @@ export default function Bars({
   return (
     <>
       {bars.map(({ key, ...barProps }) =>
-        radius == null ? (
-          <rect
+        BarComponent ? (
+          <BarComponent
+            {...barProps}
+            {...restProps}
             key={key}
             className="visx-bar"
             tabIndex={isFocusable ? 0 : undefined}
-            {...barProps}
-            {...restProps}
           />
+        ) : radius == null ? (
+          <Bar key={key} tabIndex={isFocusable ? 0 : undefined} {...barProps} {...restProps} />
         ) : (
           <BarRounded
             key={key}
