@@ -4,11 +4,10 @@ import BaseBarSeries, { BaseBarSeriesProps } from './private/BaseBarSeries';
 import Bars from './private/Bars';
 import { BarSeriesProps } from '../../types';
 
-export function BarSeries<
-  XScale extends AxisScale,
-  YScale extends AxisScale,
-  Datum extends object,
->({ colorAccessor, ...props }: Omit<BarSeriesProps<XScale, YScale, Datum>, 'BarsComponent'>) {
+function BarSeries<XScale extends AxisScale, YScale extends AxisScale, Datum extends object>({
+  colorAccessor,
+  ...props
+}: Omit<BarSeriesProps<XScale, YScale, Datum>, 'BarsComponent'>) {
   return (
     <BaseBarSeries<XScale, YScale, Datum>
       {...props}
